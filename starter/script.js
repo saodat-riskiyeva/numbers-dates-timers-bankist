@@ -318,10 +318,24 @@ console.log(randomInt(1232, 8371));
 // console.log(Math.trunc(-23.3));
 // console.log(Math.floor(-23.3));
 
-console.log((2.7).toFixed(0)); // always a string
-console.log((2.7).toFixed(3));
-console.log((2.7).toFixed(5));
+// console.log((2.7).toFixed(0)); // always a string
+// console.log((2.7).toFixed(3));
+// console.log((2.7).toFixed(5));
 
-console.log((2.375).toFixed(0));
-console.log((2.375).toFixed(3));
-console.log(+(2.375).toFixed(5));
+// console.log((2.375).toFixed(0));
+// console.log((2.375).toFixed(3));
+// console.log(+(2.375).toFixed(5));
+
+console.log(5 % 2);
+
+const isEven = n => n % 2 === 0;
+console.log(isEven(7));
+console.log(isEven(71));
+console.log(isEven(5172));
+
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+    if (i % 2 === 0) row.style.backgroundColor = 'orangered';
+    if (i % 3 === 0) row.style.backgroundColor = 'blue';
+  });
+});
