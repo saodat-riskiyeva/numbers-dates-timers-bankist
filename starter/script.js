@@ -340,10 +340,34 @@ console.log(randomInt(1232, 8371));
 //   });
 // });
 
-const diameter = 287_460_000_000;
-console.log(diameter);
+// const diameter = 287_460_000_000;
+// console.log(diameter);
 
-const PI = 3.1415;
-console.log(PI);
+// const PI = 3.1415;
+// console.log(PI);
 
-console.log(Number('230000'));
+// console.log(Number('230000'));
+
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+
+console.log(2 ** 53 + 10);
+
+console.log(594759450853858045348593485n);
+console.log(BigInt(594759450853858045348593485));
+
+console.log(10000n + 10000n);
+console.log(10000n * 4646441614684894651465416416156n);
+
+const huge = 646846465446464646454n;
+const num = 23;
+console.log(huge * BigInt(num));
+
+console.log(20n > 15);
+console.log(20n === 20);
+console.log(typeof 20n);
+console.log(20n == 20);
+
+console.log(huge + ' is REALLY big');
+
+console.log(10n / 3n);
