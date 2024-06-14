@@ -22,8 +22,8 @@ const account1 = {
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
     '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2024-06-11T23:36:17.929Z',
+    '2024-06-13T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -81,6 +81,27 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const formatMovementDate = function (date) {
+  const calDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const daysPassed = calDaysPassed(new Date(), date);
+  console.log(daysPassed);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+  else {
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    const hour = `${date.getHours()}`.padStart(2, 0);
+    const min = `${date.getMinutes()}`.padStart(2, 0);
+
+    return `${day}/${month}/${year} ${hour}:${min}`;
+  }
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -91,13 +112,8 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const date = new Date(acc.movementsDates[1]);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
-    const hour = `${date.getHours()}`.padStart(2, 0);
-    const min = `${date.getMinutes()}`.padStart(2, 0);
-    const displayDate = `${day}/${month}/${year}, ${hour}:${min}`;
+    const date = new Date(acc.movementsDates[i]);
+    const displayDate = formatMovementDate(date);
 
     const html = `
       <div class="movements__row">
@@ -325,11 +341,11 @@ btnSort.addEventListener('click', function (e) {
 
 // console.log(Math.trunc(Math.random() * 6) + 1);
 
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min) + 1) + min;
+// const randomInt = (min, max) =>
+//   Math.floor(Math.random() * (max - min) + 1) + min;
 
-console.log(randomInt(120, 517));
-console.log(randomInt(1232, 8371));
+// console.log(randomInt(120, 517));
+// console.log(randomInt(1232, 8371));
 
 // console.log(Math.trunc(23.3));
 // console.log(Math.trunc(23.9));
@@ -415,6 +431,16 @@ console.log(randomInt(1232, 8371));
 // console.log(new Date(3 * 24 * 60 * 60 * 1000));
 
 // const future = new Date(2037, 10, 19, 19, 15);
+// console.log(Number(future));
+// console.log(+future);
+
+// const daysPassed = (date1, date2) =>
+//   Math.abs(date2 - date1) / (1000 * 60 * 60 * 24);
+
+// const days1 = daysPassed(new Date(2015, 3, 14), new Date(2015, 3, 24, 12));
+
+// console.log(days1);
+
 // console.log(future);
 // console.log(future.getFullYear());
 // console.log(future.getMonth());
