@@ -80,6 +80,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 // Functions
+let currentAccount, timer;
 
 const formatMovementDate = function (date, locale) {
   const calDaysPassed = (date1, date2) =>
@@ -109,6 +110,7 @@ const formatCur = function (value, locale, currency) {
     currency: currency,
   }).format(value);
 };
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -191,14 +193,37 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogOutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // In each call, print the remaining time to UI
+
+    // When 0 seconds, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = 'Login to get started!';
+      containerApp.style.opacity = 0;
+    }
+    time--;
+  };
+  // Set time to 5 minutes
+  let time = 10;
+  tick();
+  // Call the timer every second
+  const timer = setInterval(tick, 1000);
+  return timer;
+};
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
 
 // FAKE ALWAYS LOGGED IN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -237,6 +262,9 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    // Timer
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
     // Update UI
     updateUI(currentAccount);
   }
@@ -265,6 +293,10 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc?.movementsDates.push(new Date().toISOString());
     // Update UI
     updateUI(currentAccount);
+
+    // Reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -275,11 +307,16 @@ btnLoan.addEventListener('click', function (e) {
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
 
-    currentAccount.movementsDates.push(new Date().toISOString());
-    // Update UI
-    updateUI(currentAccount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      // Update UI
+      updateUI(currentAccount);
+
+      clearInterval(timer);
+      timer = startLogOutTimer();
+    }, 3000);
   }
   inputLoanAmount.value = '';
 });
@@ -484,22 +521,38 @@ btnSort.addEventListener('click', function (e) {
 // future.setSeconds(12);
 // console.log(future);
 
-const num = 3884764.23;
+// const num = 3884764.23;
 
-const options = {
-  style: 'currency',
-  unit: 'celsius',
-  currency: 'USD',
-  useGrouping: false,
-};
+// const options = {
+//   style: 'currency',
+//   unit: 'celsius',
+//   currency: 'USD',
+//   useGrouping: false,
+// };
 
-console.log('US: ', new Intl.NumberFormat('en-US', options).format(num));
+// console.log('US: ', new Intl.NumberFormat('en-US', options).format(num));
 
-console.log('Germany: ', new Intl.NumberFormat('de-DE', options).format(num));
+// console.log('Germany: ', new Intl.NumberFormat('de-DE', options).format(num));
 
-console.log('Syria: ', new Intl.NumberFormat('ar-SY', options).format(num));
+// console.log('Syria: ', new Intl.NumberFormat('ar-SY', options).format(num));
 
-console.log(
-  `Browser: ${navigator.language} `,
-  new Intl.NumberFormat(navigator.language, options).format(num)
-);
+// console.log(
+//   `Browser: ${navigator.language} `,
+//   new Intl.NumberFormat(navigator.language, options).format(num)
+// );
+
+// const ingredients = ['olives', 'spinach'];
+// const pizzaTimer = setTimeout(
+//   (ing1, ing2) => console.log(`Here is the pizza with ${ing1} and ${ing2}!`),
+//   3000,
+//   ...ingredients
+// );
+
+// console.log('Waiting...');
+
+// if (ingredients.includes('spinach')) clearTimeout(pizzaTimer);
+
+// setInterval(function () {
+//   const now = new Date();
+//   console.log(now);
+// }, 1000);
